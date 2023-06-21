@@ -16,7 +16,7 @@ export const MisJuegos = () => {
 
     const conseguirDatosForm = e => {
         e.preventDefault();
-
+        
         let juego = {
             id: new Date().getTime(),
             titulo: e.target.titulo.value,
@@ -44,6 +44,22 @@ export const MisJuegos = () => {
         dispatch(action);
     }
 
+    const editar = (e, id) => {
+        console.log(e.target.value, "editar", id)
+
+        let juegoActualizado = {
+            id,
+            titulo: e.target.value,
+            descripcion: e.target.value
+        };
+
+        const action = {
+            type: "editar",
+            payload: juegoActualizado
+        };
+
+        dispatch(action);
+    }
 
     return (
     <div>
@@ -56,9 +72,18 @@ export const MisJuegos = () => {
                 juegos.map(juego => (
                     <li key={juego.id}>
                         {juego.titulo}
-                        &nbsp; <button onClick={ e => borramelo(juego.id)}>X</button>
+                        &nbsp; <button onClick={ e => borramelo(juego.id)}>X</button>                     
+                        &nbsp; <input type='text' onKeyDown={ e => {
+                                                    if (e.key == "Enter"){
+                                                        editar(e, juego.id);
+                                                    }
+                                                  } 
+                                                }
+                                                //   onBlur={ e => editar(e, juego.id)}
+                                />
                     </li>
                 ))
+                
             }
         </ul>
 
@@ -70,5 +95,6 @@ export const MisJuegos = () => {
             <input type='submit' value="Guardar" />
         </form>
     </div>
+    
   )
 }
